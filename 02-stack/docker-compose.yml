@@ -1,0 +1,115 @@
+# Norvela Pay GRC Lab — supporting stack
+#
+# The PRIMARY tool (CISO Assistant) is NOT in this file. It ships its own
+# compose file and its own launcher script, and pinning it here would fight
+# its upgrade path. Install it separately — see 02-stack/SETUP.md.
+#
+# What IS here: the things CISO Assistant does not do, which you need in
+# order to produce *evidence* rather than assertions.
+#
+#   vulnerable-app   A deliberately insecure web app. Your control testing
+#                    needs something real to fail against.
+#   dvwa             Second target, different weakness profile.
+#   openvas/gvm      Authenticated vulnerability scanning -> real findings
+#                    with real CVEs to feed the register.
+#   opensearch       Log store. You will ship evidence here and query it,
+#                    which is how continuous control monitoring actually
+#                    works.
+#   dashboards       Query UI for the above.
+#   mailpit          Catches notification emails so you can demonstrate
+#                    that an alert actually fired — screenshot evidence.
+#
+# Usage:
+#   docker compose up -d
+#   docker compose --profile scanning up -d     # adds GVM (heavy, ~4GB)
+#
+# Resource note: run the base profile on 8GB RAM. Add the scanning profile
+# only on 16GB+, and expect the GVM feed sync to take 30-60 minutes on
+# first start.
+
+name: grc-lab
+
+services:
+
+  # ---------------------------------------------------------------- targets
+  juice-shop:
+    image: bkimminich/juice-shop:latest
+    container_name: grc-juice-shop
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=unsafe
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/rest/admin/application-version"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+  dvwa:
+    image: vulnerables/web-dvwa:latest
+    container_name: grc-dvwa
+    ports:
+      - "8081:80"
+    restart: unless-stopped
+
+  # ------------------------------------------------------------- log estate
+  opensearch:
+    image: opensearchproject/opensearch:2.18.0
+    container_name: grc-opensearch
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "OPENSEARCH_JAVA_OPTS=-Xms1g -Xmx1g"
+      # Lab only. Never do this anywhere real.
+      - DISABLE_SECURITY_PLUGIN=true
+      - DISABLE_INSTALL_DEMO_CONFIG=true
+    ulimits:
+      memlock: { soft: -1, hard: -1 }
+      nofile: { soft: 65536, hard: 65536 }
+    volumes:
+      - opensearch-data:/usr/share/opensearch/data
+    ports:
+      - "9200:9200"
+    restart: unless-stopped
+
+  dashboards:
+    image: opensearchproject/opensearch-dashboards:2.18.0
+    container_name: grc-dashboards
+    depends_on:
+      - opensearch
+    environment:
+      - OPENSEARCH_HOSTS=["http://opensearch:9200"]
+      - DISABLE_SECURITY_DASHBOARDS_PLUGIN=true
+    ports:
+      - "5601:5601"
+    restart: unless-stopped
+
+  # ------------------------------------------------------------ mail sink
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: grc-mailpit
+    ports:
+      - "8025:8025"   # web UI
+      - "1025:1025"   # SMTP
+    restart: unless-stopped
+
+  # ------------------------------------------------------- scanning (heavy)
+  gvm:
+    image: immauss/openvas:latest
+    container_name: grc-gvm
+    profiles: ["scanning"]
+    ports:
+      - "9392:9392"
+    environment:
+      - PASSWORD=labadmin
+      - USERNAME=admin
+      - RELAYHOST=mailpit
+      - SMTPPORT=1025
+    volumes:
+      - gvm-data:/data
+    restart: unless-stopped
+
+volumes:
+  opensearch-data:
+  gvm-data:
