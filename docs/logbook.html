@@ -1,0 +1,697 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Norvela Lab Logbook</title><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<style>
+  :root {
+    --ground:   #EDF0F1;
+    --surface:  #FFFFFF;
+    --sunken:   #E3E8EA;
+    --ink:      #131B21;
+    --muted:    #5C6B73;
+    --faint:    #8A979E;
+    --line:     #D2DADE;
+    --line-str: #B6C2C8;
+    --accent:   #0E5A57;
+    --accent-w: #D7E8E7;
+    --signal:   #A9571A;
+    --signal-w: #F4E5D6;
+    --stamp:    #9B2C2C;
+
+    --f-disp: "Zilla Slab", Georgia, "Times New Roman", serif;
+    --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --f-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:   #0D1317;
+      --surface:  #151E23;
+      --sunken:   #111A1F;
+      --ink:      #E7EEF1;
+      --muted:    #93A3AB;
+      --faint:    #6C7C84;
+      --line:     #253138;
+      --line-str: #35454E;
+      --accent:   #52B5AF;
+      --accent-w: #12312F;
+      --signal:   #DE9755;
+      --signal-w: #33241503;
+      --signal-w: #2E2214;
+      --stamp:    #D97070;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:   #0D1317;
+    --surface:  #151E23;
+    --sunken:   #111A1F;
+    --ink:      #E7EEF1;
+    --muted:    #93A3AB;
+    --faint:    #6C7C84;
+    --line:     #253138;
+    --line-str: #35454E;
+    --accent:   #52B5AF;
+    --accent-w: #12312F;
+    --signal:   #DE9755;
+    --signal-w: #2E2214;
+    --stamp:    #D97070;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--f-body);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding-inline: 20px;
+    padding-block: 28px 64px;
+  }
+
+  /* ---------- file header ---------- */
+  .file-head {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-top: 3px solid var(--accent);
+    padding: 24px 24px 20px;
+  }
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 22px;
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-bottom: 16px;
+  }
+  .meta-row b { color: var(--muted); font-weight: 500; }
+  h1 {
+    font-family: var(--f-disp);
+    font-weight: 600;
+    font-size: clamp(30px, 5.4vw, 44px);
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+    margin: 0 0 10px;
+    text-wrap: balance;
+  }
+  .lede {
+    margin: 0;
+    max-width: 62ch;
+    color: var(--muted);
+    font-size: 15.5px;
+  }
+
+  /* ---------- progress ---------- */
+  .prog {
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 14px 20px;
+    align-items: end;
+  }
+  .prog-label {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-bottom: 8px;
+  }
+  .bar {
+    height: 10px;
+    background: var(--sunken);
+    border: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+  }
+  .bar > i {
+    display: block;
+    height: 100%;
+    width: 0%;
+    background: var(--accent);
+    transition: width .35s ease;
+  }
+  .prog-num {
+    font-family: var(--f-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 26px;
+    line-height: 1;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .prog-num small {
+    font-size: 12px;
+    color: var(--faint);
+    margin-left: 4px;
+  }
+  .reset {
+    grid-column: 1 / -1;
+    justify-self: start;
+    background: none;
+    border: 1px solid var(--line);
+    color: var(--faint);
+    font-family: var(--f-mono);
+    font-size: 10.5px;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  .reset:hover { color: var(--stamp); border-color: var(--stamp); }
+  .reset:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ---------- section headings ---------- */
+  .sec-head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin: 44px 0 14px;
+  }
+  .sec-head h2 {
+    font-family: var(--f-disp);
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .sec-head .rule {
+    flex: 1;
+    height: 1px;
+    background: var(--line-str);
+  }
+
+  /* ---------- phase spine ---------- */
+  .phase {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--line-str);
+    margin-bottom: 10px;
+  }
+  .phase.active { border-left-color: var(--signal); }
+  .phase.done   { border-left-color: var(--accent); }
+
+  .phase > summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 15px 18px;
+    display: grid;
+    grid-template-columns: 58px 1fr auto;
+    gap: 4px 14px;
+    align-items: center;
+  }
+  .phase > summary::-webkit-details-marker { display: none; }
+  .phase > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+  .ph-id {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: .05em;
+    color: var(--faint);
+    grid-row: 1 / 3;
+    align-self: start;
+    padding-top: 3px;
+  }
+  .ph-title {
+    font-family: var(--f-disp);
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+  }
+  .ph-sub {
+    grid-column: 2;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .ph-count {
+    grid-row: 1 / 3;
+    font-family: var(--f-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 12px;
+    color: var(--faint);
+    border: 1px solid var(--line);
+    padding: 3px 8px;
+    white-space: nowrap;
+  }
+  .phase.done .ph-count { color: var(--accent); border-color: var(--accent); }
+  .phase.active .ph-count { color: var(--signal); border-color: var(--signal); }
+
+  .ph-body {
+    padding: 4px 18px 20px;
+    border-top: 1px dashed var(--line);
+    margin-top: 2px;
+  }
+
+  ul.steps { list-style: none; margin: 14px 0 0; padding: 0; }
+  ul.steps li {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  ul.steps li:last-child { border-bottom: 0; }
+  ul.steps input {
+    appearance: none;
+    flex: 0 0 auto;
+    width: 15px; height: 15px;
+    margin-top: 4px;
+    border: 1px solid var(--line-str);
+    background: var(--surface);
+    cursor: pointer;
+    position: relative;
+  }
+  ul.steps input:checked {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  ul.steps input:checked::after {
+    content: "";
+    position: absolute;
+    left: 4px; top: 0.5px;
+    width: 4px; height: 9px;
+    border: solid #fff;
+    border-width: 0 1.8px 1.8px 0;
+    transform: rotate(42deg);
+  }
+  ul.steps input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  ul.steps label { cursor: pointer; font-size: 14.2px; }
+  ul.steps input:checked + label { color: var(--faint); text-decoration: line-through; text-decoration-thickness: 1px; }
+
+  .callout {
+    margin-top: 16px;
+    padding: 12px 14px;
+    background: var(--sunken);
+    border-left: 2px solid var(--accent);
+    font-size: 13.6px;
+  }
+  .callout.gate { border-left-color: var(--signal); }
+  .callout .k {
+    display: block;
+    font-family: var(--f-mono);
+    font-size: 10.5px;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-bottom: 5px;
+  }
+
+  /* ---------- reference rail ---------- */
+  .cols {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  @media (min-width: 760px) {
+    .cols.two { grid-template-columns: 1fr 1fr; }
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 18px;
+  }
+  .card h3 {
+    font-family: var(--f-disp);
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 12px;
+  }
+  dl.ref { margin: 0; font-size: 13.6px; }
+  dl.ref > div {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 4px 14px;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--line);
+    align-items: baseline;
+  }
+  dl.ref > div:last-child { border-bottom: 0; }
+  dl.ref dt { color: var(--ink); }
+  dl.ref dt em { display: block; font-style: normal; font-size: 12.2px; color: var(--faint); }
+  dl.ref dd {
+    margin: 0;
+    font-family: var(--f-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 12.4px;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  dl.ref dd.past { color: var(--faint); }
+
+  .tbl-scroll { overflow-x: auto; }
+  table.stack {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.4px;
+    min-width: 440px;
+  }
+  table.stack th, table.stack td {
+    text-align: left;
+    padding: 8px 12px 8px 0;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  table.stack th {
+    font-family: var(--f-mono);
+    font-size: 10.5px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--faint);
+    font-weight: 500;
+  }
+  table.stack td.p { font-family: var(--f-mono); font-size: 12.4px; color: var(--muted); white-space: nowrap; }
+
+  .note {
+    margin-top: 28px;
+    font-size: 13px;
+    color: var(--faint);
+    border-top: 1px solid var(--line);
+    padding-top: 14px;
+  }
+  .note b { color: var(--muted); font-weight: 500; }
+  code {
+    font-family: var(--f-mono);
+    font-size: .89em;
+    background: var(--sunken);
+    padding: 1px 5px;
+    border: 1px solid var(--line);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="file-head">
+    <div class="meta-row">
+      <span><b>File</b> NOR/GRC/2026</span>
+      <span><b>Subject</b> Norvela Pay, S.A. — Lisboa</span>
+      <span><b>Engagement</b> 12 weeks · 7 phases</span>
+      <span><b>Assessor</b> You</span>
+    </div>
+    <h1>Norvela Lab Logbook</h1>
+    <p class="lede">
+      Working record for the end-to-end GRC assessment of a simulated EU payment
+      institution. Tick each step as you complete it. The deliverable and the proof
+      gate for every phase are written out below — the gate is the part that tells
+      you whether you actually learned it.
+    </p>
+
+    <div class="prog">
+      <div>
+        <div class="prog-label">Programme completion</div>
+        <div class="bar"><i id="bar"></i></div>
+      </div>
+      <div class="prog-num"><span id="pct">0</span>%<small id="frac">0 / 0</small></div>
+      <button class="reset" id="reset" type="button">Clear all progress</button>
+    </div>
+  </header>
+
+  <div class="sec-head"><h2>Phases</h2><span class="rule"></span></div>
+  <div id="phases"></div>
+
+  <div class="sec-head"><h2>Scenario at a glance</h2><span class="rule"></span></div>
+  <div class="cols two">
+    <div class="card">
+      <h3>The entity</h3>
+      <dl class="ref">
+        <div><dt>Norvela Pay, S.A. <em>Authorised payment institution, Banco de Portugal</em></dt><dd>340 staff</dd></div>
+        <div><dt>Products <em>PayRails · Vault · Flow · Sentinel</em></dt><dd>€61M rev</dd></div>
+        <div><dt>Entities <em>PT · ES · PL · US — Poland runs the NOC</em></dt><dd>4</dd></div>
+        <div><dt>Third parties <em>20 in register, 1 shadow, 1 terminated</em></dt><dd>20</dd></div>
+        <div><dt>Planted findings <em>Across access, data, vendor, technical, governance, AI</em></dt><dd>46</dd></div>
+        <div><dt>CISO <em>Vacant — engineering lead acting. Your seat.</em></dt><dd>—</dd></div>
+      </dl>
+    </div>
+    <div class="card">
+      <h3>Clocks running in scenario</h3>
+      <dl class="ref">
+        <div><dt>Banco de Portugal RoI remediation <em>Response to the March supervisory letter</em></dt><dd>30 Nov 2026</dd></div>
+        <div><dt>Customer questionnaire <em>214 questions · €4.1M ARR renewal</em></dt><dd>3 weeks</dd></div>
+        <div><dt>ISO 27001 Stage 1 <em>SoA does not yet exist</em></dt><dd>15 Feb 2027</dd></div>
+        <div><dt>Incident NOR-2026-0908 <em>€310k unauthorised payouts · 41k records read</em></dt><dd class="past">live</dd></div>
+      </dl>
+    </div>
+  </div>
+
+  <div class="sec-head"><h2>Regulatory reference</h2><span class="rule"></span></div>
+  <div class="card">
+    <dl class="ref">
+      <div><dt>DORA (Reg. EU 2022/2554) <em>Applicable since; annual Register of Information cycle</em></dt><dd class="past">17 Jan 2025</dd></div>
+      <div><dt>ISO 27001:2013 → 2022 transition <em>Closed. 93 Annex A controls; Amd 1:2024 adds a climate determination at Cl. 4.1</em></dt><dd class="past">31 Oct 2025</dd></div>
+      <div><dt>NIS2 in Portugal — DL 125/2025 <em>Regime Jurídico da Cibersegurança · CNCS lead, CERT.PT as CSIRT</em></dt><dd class="past">3 Apr 2026</dd></div>
+      <div><dt>EU AI Act Art. 50 transparency <em>Applies; Art. 50(2) for legacy systems from 2 Dec 2026</em></dt><dd class="past">2 Aug 2026</dd></div>
+      <div><dt>AI Act Annex III high-risk <em>Deferred by the Digital Omnibus, Reg. EU 2026/1744</em></dt><dd>2 Dec 2027</dd></div>
+      <div><dt>AI Act Annex I embedded <em>Same instrument</em></dt><dd>2 Aug 2028</dd></div>
+    </dl>
+    <p class="note" style="margin-top:16px">
+      <b>Verified September 2026.</b> Regulation moves faster than any lab. Confirm every
+      date before you cite it in an interview — and note that “that was the position as of
+      [date], I’d confirm it’s current” scores better than a confident wrong number.
+    </p>
+  </div>
+
+  <div class="sec-head"><h2>Lab stack</h2><span class="rule"></span></div>
+  <div class="card tbl-scroll">
+    <table class="stack">
+      <thead>
+        <tr><th>Component</th><th>Role in the programme</th><th>Where</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>CISO&nbsp;Assistant</td><td>GRC platform — risk register, SoA, audits, evidence, ~200 framework libraries with automatic cross-mapping</td><td class="p">:8443</td></tr>
+        <tr><td>Prowler</td><td>Cloud configuration assessment mapped to CIS, ISO 27001, PCI DSS, SOC 2, NIS2</td><td class="p">CLI</td></tr>
+        <tr><td>OpenSCAP</td><td>Host hardening scans — produces real, timestamped audit evidence</td><td class="p">CLI</td></tr>
+        <tr><td>OpenSearch</td><td>Evidence store; write the query that would have caught the incident</td><td class="p">:9200</td></tr>
+        <tr><td>Juice Shop / DVWA</td><td>Targets that genuinely fail controls, so testing isn’t theatre</td><td class="p">:3000 / :8081</td></tr>
+        <tr><td>GVM / OpenVAS</td><td>Authenticated vulnerability scanning into the findings pipeline</td><td class="p">:9392</td></tr>
+        <tr><td>Mailpit</td><td>Catches alerts — proof that a control fired, not that it exists</td><td class="p">:8025</td></tr>
+        <tr><td>FAIR script</td><td>Monte Carlo loss modelling; turns a heat map into an investment case</td><td class="p">python</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="note">
+    <b>Progress is stored in this browser only</b> — it does not sync between devices and
+    clearing site data resets it. The lab files live in this repository; start with
+    <code>README.md</code>, then <code>02-stack/SETUP.md</code>.
+    Norvela Pay and everyone in it are fictional; the regulations and tools are real.
+  </p>
+
+</div>
+
+<script>
+const PHASES = [
+  {
+    id: "P0", wk: "Week 1 · ~6h", title: "Set up and orient",
+    sub: "Get the lab running and read yourself in the way a new CISO would.",
+    steps: [
+      "Work through SETUP.md until healthcheck is green for CISO Assistant, Juice Shop, OpenSearch, Mailpit",
+      "Read the company dossier once, fast, no notes",
+      "Read it again slowly with a blank page — list everything that makes you uncomfortable (aim for 40+)",
+      "Sort that list into: broken / don't know yet / need to ask someone",
+      "Load ISO 27001:2022, DORA and GDPR libraries; create the domain and five perimeters"
+    ],
+    deliv: "Day 3 Observations Memo — 2 pages, to the CEO. What you found, what worries you most, what you need in 30 days. No jargon, no framework names in the opening paragraph.",
+    gate: "Give it to someone non-technical and ask them to tell you the top three problems back. If they can't, rewrite. Executive communication is testable and this is the test."
+  },
+  {
+    id: "P1", wk: "Weeks 2–3 · ~16h", title: "Governance and risk foundations",
+    sub: "Risk criteria, appetite, roles, and a register that isn't embarrassing.",
+    steps: [
+      "Critique the inherited register — find at least 12 structural defects",
+      "Fill in and challenge the scoring criteria: are the financial bands right for a €61M firm?",
+      "Complete the risk appetite sheet; add two statements and an escalation path for each",
+      "Rebuild the register — target 35–45 well-formed risks from the dossier, assets, vendors, IAM and incident",
+      "Write the governance fix: three-lines RACI, a realistic Risk Committee charter, the acting-CISO conflict paper"
+    ],
+    deliv: "Completed risk workbook plus the governance pack.",
+    gate: "Take your five highest risks. For each, say aloud in under 60 seconds without notes: what could happen, why here specifically, what it costs, what you'd do first. Record it. Watch it back. This is literally the interview."
+  },
+  {
+    id: "P2", wk: "Week 4 · ~8h", title: "Scoping and the Statement of Applicability",
+    sub: "The phase people skip and the one auditors attack.",
+    steps: [
+      "ISMS scope statement — is the Poland entity in? Is the sandbox? Justify every exclusion",
+      "PCI DSS scope — map the CDE. PANs in Datadog logs and unmasked staging data blow it wide open",
+      "DORA — identify the critical or important functions and write the justification per function",
+      "NIS2/RJC — essential or important entity? Then the lex specialis analysis against DORA",
+      "AI Act — classify Sentinel and Flow; decide provider vs deployer with Banco Astera",
+      "Build the SoA across all 93 Annex A controls, including the Amd 1:2024 climate determination"
+    ],
+    deliv: "Five scope statements and a complete Statement of Applicability.",
+    gate: "Have someone pick three Annex A controls at random: applicable? why? what's the evidence? Hesitate on more than one and your SoA is decoration."
+  },
+  {
+    id: "P3", wk: "Weeks 5–6 · ~16h", title: "Control assessment and evidence",
+    sub: "Stop asserting, start proving. This is where the stack earns its keep.",
+    steps: [
+      "Learn design vs operating effectiveness cold — and where Type I and Type II sit",
+      "Write test procedures for 20 controls before testing anything, with sample sizes and rationale",
+      "Access review against the IAM extract — there are 8 planted problems. Find all 8",
+      "Vulnerability management — define an SLA, then measure current performance against it",
+      "Run Prowler; map every failed check to an Annex A control and a DORA article",
+      "OpenSCAP a host; attach the report as evidence",
+      "Write the OpenSearch query that would have detected the incident pattern",
+      "Build the evidence library — one folder per control, with period covered and design/operating flag"
+    ],
+    deliv: "20 tested controls with workpapers, plus the evidence library.",
+    gate: "Hand your access review workpaper to someone: could they re-perform the test from what's written and reach the same answer? That is the actual standard for audit documentation."
+  },
+  {
+    id: "P4", wk: "Weeks 7–8 · ~16h", title: "Third-party risk and the DORA Register",
+    sub: "The single most employable artefact in the lab.",
+    steps: [
+      "Build a tiering model with real criteria, not high/medium/low",
+      "Tier all 20 vendors",
+      "Full due diligence on the worst three — Sertã Systems is the deliberate horror",
+      "Build the Register of Information — function taxonomy first, then functions, providers, contracts, chain, assessments",
+      "Write the data-quality statement: every unpopulated field, why, owner, date",
+      "Concentration risk board paper — AWS at 100%. 'Multi-cloud everything' is the wrong answer; know why"
+    ],
+    deliv: "Completed RoI, data-quality statement, concentration paper, three due-diligence reports.",
+    gate: "Explain to a non-specialist in three minutes what the Register of Information is for. If you say 'because DORA requires it', you haven't understood it — it exists so supervisors can see systemic concentration across the whole sector."
+  },
+  {
+    id: "P5", wk: "Week 9 · ~8h", title: "Incident, continuity and the regulatory clock",
+    sub: "Perform under time pressure with incomplete information.",
+    steps: [
+      "Work the incident pack in real time with a timer — decide at each point before reading on",
+      "Produce all seven incident deliverables",
+      "Write the note comparing your T+11h classification to your T+2day one, and why the first was reasonable",
+      "Run the BIA nobody ever did — then check your RTOs against a Ledger restore that has never succeeded",
+      "Write the DORA-aware IRP and the cloud-outage continuity plan the company lacks"
+    ],
+    deliv: "Full incident pack, BIA, revised IRP and BCP.",
+    gate: "Have someone read the timeline aloud, stopping at each decision point. Answer cold, no notes. That's the tabletop — and it's also how a panel interview feels."
+  },
+  {
+    id: "P6", wk: "Week 10 · ~8h", title: "Reporting, audit and the board",
+    sub: "Make the work land with people who have ninety seconds.",
+    steps: [
+      "Plan and perform an ISO 27001 internal audit of three Annex A themes, with CAPA",
+      "Produce the Clause 9.3 management review pack and minutes",
+      "Build 8 or fewer KRIs — each with a threshold, automatically collectable, each one someone would act on",
+      "Write the one-page quarterly board risk paper",
+      "Answer the 214-question customer questionnaire, then build the reuse library",
+      "Run the FAIR model with your own calibrated inputs and write the investment case"
+    ],
+    deliv: "Audit report, management review pack, metrics set, board paper, questionnaire response.",
+    gate: "Your board paper fits on one page and survives this: would a CFO who reads only the first two sentences know what you want and why?"
+  },
+  {
+    id: "P7", wk: "Weeks 11–12 · ~16h", title: "Interview conversion",
+    sub: "Turn twelve weeks of artefacts into offers.",
+    steps: [
+      "Work the 120-question bank aloud, recorded, then compare",
+      "Build 12 STAR stories from the lab plus your SOC, DFIR and pentest history",
+      "Run all six case studies under timed conditions",
+      "Assemble the portfolio — SoA, RoI approach, incident memo, FAIR analysis — labelled openly as lab work",
+      "Write your positioning: you can assess a control and also say whether an attacker would care about it"
+    ],
+    deliv: "Portfolio, STAR bank, timed case-study performances.",
+    gate: "Do Case 5 — the board presentation — for a real person who is allowed to interrupt. Then Case 3, the hostile CTO, with someone genuinely trying to win."
+  }
+];
+
+const KEY = "norvela-lab-v1";
+let state = {};
+try {
+  const raw = localStorage.getItem(KEY);
+  if (raw) state = JSON.parse(raw) || {};
+} catch (e) { state = {}; }
+
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+}
+
+const host = document.getElementById("phases");
+
+PHASES.forEach((p, pi) => {
+  const d = document.createElement("details");
+  d.className = "phase";
+  d.id = "ph-" + p.id;
+
+  const stepsHtml = p.steps.map((s, si) => {
+    const id = `${p.id}-${si}`;
+    const on = !!state[id];
+    return `<li>
+      <input type="checkbox" id="${id}" data-phase="${pi}" ${on ? "checked" : ""}>
+      <label for="${id}">${s}</label>
+    </li>`;
+  }).join("");
+
+  d.innerHTML = `
+    <summary>
+      <span class="ph-id">${p.id}<br>${p.wk.split(" · ")[0].replace("Weeks ", "W").replace("Week ", "W")}</span>
+      <span class="ph-title">${p.title}</span>
+      <span class="ph-count" data-count="${pi}">0/${p.steps.length}</span>
+      <span class="ph-sub">${p.sub}</span>
+    </summary>
+    <div class="ph-body">
+      <ul class="steps">${stepsHtml}</ul>
+      <div class="callout"><span class="k">Deliverable</span>${p.deliv}</div>
+      <div class="callout gate"><span class="k">Proof gate</span>${p.gate}</div>
+    </div>`;
+  host.appendChild(d);
+});
+
+function refresh() {
+  let total = 0, done = 0;
+  PHASES.forEach((p, pi) => {
+    let d = 0;
+    p.steps.forEach((_, si) => { if (state[`${p.id}-${si}`]) d++; });
+    total += p.steps.length;
+    done += d;
+    const badge = document.querySelector(`[data-count="${pi}"]`);
+    if (badge) badge.textContent = `${d}/${p.steps.length}`;
+    const el = document.getElementById("ph-" + p.id);
+    el.classList.toggle("done", d === p.steps.length);
+    el.classList.toggle("active", d > 0 && d < p.steps.length);
+  });
+  const pct = total ? Math.round((done / total) * 100) : 0;
+  document.getElementById("bar").style.width = pct + "%";
+  document.getElementById("pct").textContent = pct;
+  document.getElementById("frac").textContent = `${done} / ${total}`;
+}
+
+host.addEventListener("change", (e) => {
+  const cb = e.target;
+  if (cb.type !== "checkbox") return;
+  state[cb.id] = cb.checked;
+  if (!cb.checked) delete state[cb.id];
+  save();
+  refresh();
+});
+
+document.getElementById("reset").addEventListener("click", () => {
+  state = {};
+  save();
+  host.querySelectorAll('input[type="checkbox"]').forEach(c => { c.checked = false; });
+  refresh();
+});
+
+// open the first phase that isn't finished
+(function openCurrent() {
+  for (const p of PHASES) {
+    const d = p.steps.filter((_, si) => state[`${p.id}-${si}`]).length;
+    if (d < p.steps.length) {
+      document.getElementById("ph-" + p.id).open = true;
+      return;
+    }
+  }
+  document.getElementById("ph-" + PHASES[0].id).open = true;
+})();
+
+refresh();
+</script>
+
+</body></html>
