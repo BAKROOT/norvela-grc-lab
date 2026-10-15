@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+message: "If you use this lab for teaching or training, please cite it as below."
+title: "The Norvela GRC Lab: a self-hosted governance, risk and compliance training environment"
+abstract: >-
+  A 12-week, hands-on GRC programme built around one fictional EU payment
+  institution, covering risk assessment, scoping, control testing, third-party
+  risk, the DORA Register of Information, incident classification, board
+  reporting and interview preparation across DORA, NIS2, GDPR, PCI DSS,
+  ISO/IEC 27001, SOC 2 and the EU AI Act.
+type: software
+authors:
+  - family-names: "Kamal"
+    given-names: "Bilal Ahmad"
+    affiliation: "Universidade de Coimbra, CISUC"
+version: "1.1.0"
+date-released: "2026-10-15"
+license: MIT
+repository-code: "https://github.com/BAKROOT/norvela-grc-lab"
+keywords:
+  - grc
+  - governance-risk-compliance
+  - dora
+  - nis2
+  - iso27001
+  - gdpr
+  - pci-dss
+  - eu-ai-act
+  - risk-management
+  - third-party-risk
+  - fair
+  - cybersecurity-training
