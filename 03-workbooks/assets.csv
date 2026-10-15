@@ -1,0 +1,25 @@
+asset_id,asset_name,asset_type,owner,environment,classification,source_inventory,hosting_location,supports_critical_or_important_function,notes
+AST-001,Ledger (Oracle 19c),Database,Finance Ops,Production,Restricted,CMDB,On-prem Lisbon,Yes,Authoritative merchant balances. Restore untested since 2022.
+AST-002,Vault balance service,Application,Platform Eng,Production,Restricted,CMDB,AWS eu-west-1,Yes,Real-time fund movement. App logs 14-day retention.
+AST-003,PayRails API gateway,Application,Platform Eng,Production,Restricted,CMDB,AWS eu-west-1,Yes,
+AST-004,Sentinel fraud model,ML model,Data Science,Production,Confidential,Spreadsheet-DataTeam,AWS eu-central-1,Yes,"Retrained monthly. No approval gate, no model card, no bias test."
+AST-005,Flow credit model,ML model,Data Science,Production,Confidential,Spreadsheet-DataTeam,AWS eu-central-1,Yes,Feeds Banco Astera lending decision. AI Act classification unresolved.
+AST-006,HSM cluster (Thales),Hardware,Platform Eng,Production,Restricted,CMDB,On-prem Lisbon,Yes,Reachable from any office VLAN — no segmentation.
+AST-007,Entra ID tenant,Identity,IT,Production,Restricted,IT-Asset-List,Microsoft cloud,Yes,IdP for 31 SaaS apps. MFA enforced.
+AST-008,norvela-data lake (S3),Data store,Data Science,Production,Restricted,Spreadsheet-DataTeam,AWS eu-central-1,Yes,7 years of transactions. Queried during NOR-2026-0908.
+AST-009,norvela-staging environment,Environment,Platform Eng,Staging,Internal,CMDB,AWS eu-west-1,No,CLASSIFICATION WRONG: holds unmasked production PANs from Nov-2025 restore. 60 developers have read access.
+AST-010,norvela-sandbox (merchant test),Environment,Developer Relations,Sandbox,Public,CMDB,AWS eu-west-1,No,Root account MFA not enforced. Credential holder unknown.
+AST-011,norvela-dev,Environment,Platform Eng,Development,Internal,CMDB,AWS eu-west-1,No,60 engineers hold PowerUserAccess. Root MFA not enforced.
+AST-012,norvela-audit (log archive),Data store,Security,Production,Restricted,CMDB,AWS eu-west-1,Yes,"CloudTrail org trail, 400-day retention. Saved the 2026-09 investigation."
+AST-013,ESXi host 01,Hardware,IT,Production,Internal,IT-Asset-List,On-prem Lisbon,No,Version end-of-support since 2024.
+AST-014,ESXi host 02,Hardware,IT,Production,Internal,IT-Asset-List,On-prem Lisbon,No,Version end-of-support since 2024.
+AST-015,GitHub org (norvela),SaaS,Platform Eng,Production,Confidential,Spreadsheet-DataTeam,GitHub US,Yes,"Deploy pipeline. 22 secrets found in history 2025, 6 unrotated."
+AST-016,Snowflake warehouse,SaaS,Data Science,Production,Restricted,NOT IN ANY INVENTORY,Snowflake EU-DE,Yes,SHADOW IT. Discovered only via the expense report. No DPA.
+AST-017,Corporate WiFi (Lisbon),Network,IT,Production,Internal,IT-Asset-List,On-prem Lisbon,No,Flat network — reaches the server room.
+AST-018,Poland NOC workstations (15x Linux),Endpoint,Norvela Tech,Production,Internal,NOT IN ANY INVENTORY,Kraków office,Yes,"Unmanaged. No EDR, no patch management. Have production access."
+AST-019,Jamf-managed Macs (280),Endpoint,IT,Production,Internal,IT-Asset-List,Distributed,No,
+AST-020,Intune-managed Windows (45),Endpoint,IT,Production,Internal,IT-Asset-List,Distributed,No,
+AST-021,Backup tapes (Ledger),Media,IT,Production,Restricted,CMDB,Iron Mountain PT,Yes,Weekly. Restore untested.
+AST-022,Merchant portal (web),Application,Product,Production,Confidential,CMDB,AWS eu-west-1,Yes,
+AST-023,Settlement batch service,Application,Platform Eng,Production,Restricted,CMDB,AWS eu-west-1,Yes,Runs as svc-settlement-batch. Key last rotated 2023. Breach vector.
+AST-024,Talkdesk call recordings,Data store,Customer Support,Production,Confidential,NOT IN ANY INVENTORY,Talkdesk US,No,"~9,000/yr, retained indefinitely, US-hosted."
