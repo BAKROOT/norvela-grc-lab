@@ -15,7 +15,7 @@
 ![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)
 ![Regulatory dates verified](https://img.shields.io/badge/regulatory%20dates-verified%20Sep%202026-A9571A)
 
-[Start here](#-start-here) · [Programme](#-the-programme) · [Lab stack](#-lab-stack) · [Repository layout](#-repository-layout) · [PDF manual](docs/Norvela-GRC-Lab-Manual.pdf)
+[Start here](#-start-here) · [Programme](#-the-programme) · [Lab stack](#-lab-stack) · [Repository layout](#-repository-layout) · [PDF manual](docs/Norvela-GRC-Lab-Manual.pdf) · [**Live progress tracker**](https://bakroot.github.io/norvela-grc-lab/)
 
 </div>
 
@@ -42,7 +42,7 @@ cd norvela-grc-lab
 1. **[`02-stack/SETUP.md`](02-stack/SETUP.md)**: build the lab. It takes one evening (about 3 hours, mostly downloads).
 2. **[`01-scenario/00-COMPANY-DOSSIER.md`](01-scenario/00-COMPANY-DOSSIER.md)**: read up on the company you are assessing.
 3. **[`CURRICULUM.md`](CURRICULUM.md)**: the programme. Work the phases in order.
-4. **[`docs/logbook.html`](docs/logbook.html)**: open it in a browser to tick off steps as you go. Progress is saved in that browser only.
+4. **[Progress tracker](https://bakroot.github.io/norvela-grc-lab/)**: tick off steps as you go (hosted on GitHub Pages from [`docs/logbook.html`](docs/logbook.html)). Progress is saved in your browser only.
 
 > [!WARNING]
 > Do **not** open [`01-scenario/99-FINDINGS-KEY.md`](01-scenario/99-FINDINGS-KEY.md) until you have finished Phase 3. The lab is only worth doing if you find the findings yourself.
@@ -131,7 +131,8 @@ norvela-grc-lab/
 └── docs/
     ├── Norvela-GRC-Lab-Manual.pdf     Print edition of the whole lab
     ├── Norvela-GRC-Lab-Findings-Key.pdf   Findings key, kept separate so you don't see it early
-    ├── logbook.html                   Interactive progress tracker
+    ├── logbook.html                   Interactive progress tracker (served on GitHub Pages)
+    ├── index.html                     Pages entry point → logbook.html
     └── build_pdfs.py                  Rebuilds both PDFs from the Markdown
 ```
 

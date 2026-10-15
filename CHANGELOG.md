@@ -13,6 +13,7 @@ All notable changes to the Norvela GRC Lab. Dates are ISO 8601.
   referenced in `SETUP.md` but missing from the archive.
 - `docs/logbook.html`: interactive progress tracker (8 phases, steps,
   deliverables, proof gates). Progress is stored in the browser only.
+  Published with GitHub Pages at https://bakroot.github.io/norvela-grc-lab/.
 - `docs/build_pdfs.py`: rebuilds both PDFs from the Markdown sources.
 - `docs/img/fair-settlement-fraud.png`: sample FAIR output for the README.
 - Repository packaging: README, LICENSE (MIT), CITATION.cff, .gitignore.
